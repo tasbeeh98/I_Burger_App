@@ -35,7 +35,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
     private RecyclerView rv;
     private MyAdapter adapter;
     String userId;
-    ImageView folder;
+    ImageView folder,back;
     DrawerLayout drawerLayout ;
     NavigationView navigationView ;
 
@@ -122,6 +122,15 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
                 else drawerLayout.closeDrawer(GravityCompat.END);
             }
 
+        });
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Orders.this, HomeScreen.class);
+                startActivity(intent);
+            }
         });
     }
 

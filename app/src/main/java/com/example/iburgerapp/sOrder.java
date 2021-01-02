@@ -5,17 +5,33 @@ public class sOrder {
     private int price;
     private int num;
     private String userId;
+    private int rPrice;
 
     public sOrder() {
 
     }
 
+    public sOrder(int rprice , int num) {
+        this.rPrice = rprice ;
+        this.num = num ;
 
-    public sOrder(String oName, int price, int num , String userId) {
+    }
+
+
+    public sOrder(String oName, int price, int num , String userId , int rPrice) {
         this.oName = oName;
         this.price = price;
         this.num = num;
         this.userId = userId;
+        this.rPrice = rPrice ;
+    }
+
+    public int getrPrice() {
+        return rPrice;
+    }
+
+    public void setrPrice(int rPrice) {
+        this.rPrice = rPrice;
     }
 
     public String getoName() {

@@ -13,6 +13,7 @@
         android:id="@+id/imageView9"
         android:layout_width="179dp"
         android:layout_height="189dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/red" />
@@ -39,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView11" />
 
     <TextView
-        android:id="@+id/pricetxt"
+        android:id="@+id/rPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -56,7 +57,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
         android:text="JD"
-        app:layout_constraintStart_toEndOf="@+id/pricetxt"
+        app:layout_constraintStart_toEndOf="@+id/rPrice"
         app:layout_constraintTop_toBottomOf="@+id/nametxt" />
 
     <TextView
@@ -68,10 +69,19 @@
         android:text=""
         app:layout_constraintEnd_toEndOf="@+id/imageView9"
         app:layout_constraintStart_toStartOf="@+id/imageView9"
-        app:layout_constraintTop_toBottomOf="@+id/pricetxt" />
+        app:layout_constraintTop_toBottomOf="@+id/rPrice" />
 
     <TextView
         android:id="@+id/idtxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/imageView9"
+        tools:layout_editor_absoluteY="182dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/pricetxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"

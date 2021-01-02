@@ -29,9 +29,10 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     int val1, val2, val3, val4 = 1;
-    int price1,price2,price3,price4=0;
+    int price1=5,price2=4,price3=6,price4=3;
     String ff, ff1, ff2, ff3;
     String userId;
+    int rPrice1,rPrice2,rPrice3,rPrice4;
 
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -46,6 +47,11 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         userId= currentFirebaseUser.getUid();
 
         deleteSnake();
+
+        rPrice1 = 0;
+        rPrice2 = 0;
+        rPrice3 = 0;
+        rPrice4 = 0;
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -101,6 +107,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 count1++;
                 t1.setText(String.valueOf(count1));
                 val1 = 1;
+                rPrice1 +=price1;
 
             }
         });
@@ -132,6 +139,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 count2++;
                 t2.setText(String.valueOf(count2));
                 val2 = 1;
+                rPrice2+=price2;
 
             }
         });
@@ -159,6 +167,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 count3++;
                 t3.setText(String.valueOf(count3));
                 val3 = 1;
+                rPrice3+=price3;
 
             }
         });
@@ -186,6 +195,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 count4++;
                 t4.setText(String.valueOf(count4));
                 val4 = 1;
+                rPrice4 +=price4;
 
             }
         });
@@ -209,16 +219,15 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
         r1.setChecked(true);
         ff= (String) r1.getText() ;
-        price1 =5;
         r3.setChecked(true);
         ff1= (String) r3.getText() ;
-        price2 = 4;
+
         r5.setChecked(true);
         ff2= (String) r5.getText() ;
-        price3 = 6;
+
         r7.setChecked(true);
         ff3= (String) r7.getText() ;
-        price4 = 3;
+
     }
 
     private void deleteSnake() {
@@ -247,49 +256,76 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         switch (v.getId()) {
 
             case R.id.radio_s:
+                count1=0;
+                rPrice1=0;
+                t1.setText(String.valueOf(count1));
                 r2.setChecked(false);
                 ff = (String) r1.getText();
                 price1 = 5;
                 break;
 
             case R.id.radio_m1:
+                //rPrice1= 0;
+                count1=0;
+                rPrice1=0;
+                t1.setText(String.valueOf(count1));
                 r1.setChecked(false);
                 ff = (String) r1.getText()+" M E A L";
                 price1=6;
                 break;
 
             case R.id.radio_h:
-
+                count2=0;
+                rPrice2=0;
+                t2.setText(String.valueOf(count2));
                 r4.setChecked(false);
                 ff1 = (String) r3.getText();
                 price2=4;
                 break;
 
             case R.id.radio_m2:
+                //rPrice2 = 0;
+                count2=0;
+                rPrice2=0;
+                t2.setText(String.valueOf(count2));
                 r3.setChecked(false);
                 ff1 = (String) r3.getText()+" M E A L";
-                price2=5;
+                price2=6;
                 break;
 
             case R.id.radio_c:
+                count3=0;
+                rPrice3=0;
+                t3.setText(String.valueOf(count3));
                 r6.setChecked(false);
                 ff2 = (String) r5.getText();
-                price3=6;
+                price3=6 ;
                 break;
 
             case R.id.radio_m3:
+                //rPrice3 = 0;
+                count3=0;
+                rPrice3=0;
+                t3.setText(String.valueOf(count3));
                 r5.setChecked(false);
                 ff2 = (String) r5.getText()+" M E A L";
                 price3=7;
                 break;
 
             case R.id.radio_f:
+                count4=0;
+                rPrice4 = 0;
+                t4.setText(String.valueOf(count4));
                 r8.setChecked(false);
                 ff3 = (String) r7.getText();
                 price4 = 3;
                 break;
 
             case R.id.radio_m4:
+                //rPrice4= 0;
+                count4=0;
+                rPrice4 = 0;
+                t4.setText(String.valueOf(count4));
                 r7.setChecked(false);
                 ff3 = (String) r7.getText()+" M E A L";
                 price4 = 4;
@@ -309,10 +345,10 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
             case R.id.nav_orders:
 
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff);}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1);}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2);}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3);}
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1 );}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
                 startActivity(new Intent(this, Orders.class));
                 break;
 
@@ -329,11 +365,11 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         return true;
     }
 
-    public void upload(int val , int count, String ff ) {
+    public void upload(int val , int count, String ff ,int p) {
 
         DatabaseReference postsRef = ref.child("Snack");
         DatabaseReference newPostRef = postsRef.push();
-        newPostRef.setValue(new sOrder(ff, val, count, userId));
+        newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
 
         }
     }
