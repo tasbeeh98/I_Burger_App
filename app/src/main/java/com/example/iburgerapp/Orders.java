@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -34,8 +36,9 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
     private List<sOrder> listOrder;
     private RecyclerView rv;
     private MyAdapter adapter;
+    GridView gridView;
     String userId;
-    ImageView folder,back;
+    ImageView folder,back,confirm;
     DrawerLayout drawerLayout ;
     NavigationView navigationView ;
 
@@ -57,9 +60,9 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         userId= currentFirebaseUser.getUid();
 
-        rv=(RecyclerView)findViewById(R.id.recyclerview);
-        rv.setHasFixedSize(true);
-        //rv.setLayoutManager(new LinearLayoutManager(this));
+       rv=(RecyclerView)findViewById(R.id.recyclerview);
+       rv.setHasFixedSize(true);
+        /////rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setLayoutManager(new GridLayoutManager(this, 2));
 
 
@@ -77,7 +80,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
                         listOrder.add(l);
                     }
                     adapter=new MyAdapter(listOrder);
-                    rv.setAdapter(adapter);
+                    rv.setAdapter( adapter);
 
                 }
             }
@@ -130,6 +133,14 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
             public void onClick(View view) {
                 Intent intent = new Intent(Orders.this, HomeScreen.class);
                 startActivity(intent);
+            }
+        });
+
+        confirm = findViewById(R.id.con);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

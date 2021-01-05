@@ -25,9 +25,11 @@ import java.util.Map;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     private List<sOrder > order;
     int count1 = 0;
+    int pric ;
+    String p1;
     String userId;
-
-    DatabaseReference ref;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference();
 
 
     public MyAdapter(List<sOrder> listData) {
@@ -49,37 +51,53 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         holder.rPrice .setText(String.valueOf(ld.getrPrice()));
         holder.price.setText(String.valueOf(ld.getPrice()));
         holder.uid .setText(ld.getUserId());
-        String p1 =  String.valueOf(holder.price.getText());
 
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         userId= currentFirebaseUser.getUid();
 
+
+
         holder.plus.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                String a=String.valueOf(holder.count.getText());
-                count1= Integer.parseInt(a);
+                p1 =  String.valueOf(holder.price.getText());
+
+                String name = String.valueOf(holder.name.getText());
+
+                String a = String.valueOf(holder.count.getText());
+                count1 = Integer.parseInt(a);
                 count1++;
                 holder.count.setText(String.valueOf(count1));
-                String p =  String.valueOf(holder.rPrice.getText());
-                int pric=  Integer.parseInt(p)+Integer.parseInt(p1);
+                String p = String.valueOf(holder.rPrice.getText());
+                pric = Integer.parseInt(p) + Integer.parseInt(p1);
                 holder.rPrice.setText(String.valueOf(pric));
-                //ref.child("i-burger-app-default-rtdb").child("Snack").child("rPrice").setValue(pric);
-                //ref.child("myDb/Snack/rPrice").setValue(pric);
-                //ref.child("Snack").child("rPrice").setValue(pric);
-                //FirebaseDatabase  database = FirebaseDatabase.getInstance();
-                //DatabaseReference mDatabaseRef = database.getReference();
-                //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                //ref.child("Snack").getRef().child("rPrice").setValue(pric);
-                //DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Snack").child("rPrice");
-                //Map<String, Object> updates = new HashMap<String,Object>();
-                //updates.put("rPrice", pric);
-                //updates.put("homeScore", newscore);
-                //etc
-                //ref.updateChildren(updates);
+                //add((String)holder.name.getText(),pric,userId );
 
+               //sOrder s = new sOrder() ;
+               //String txt = s.getoName();
+
+                if (name.equals("S H A W E R M A") || name.equals("S H A W E R M A M E A L") ){
+                    String f= "s"+userId;
+                    update(f);
+                    }
+                if (name.equals("H O T  D O G") || name.equals("H O T  D O G M E A L") ){
+                    String f= "h"+userId;
+                    update(f);
+                    }
+
+                if (name.equals("C H R I S P Y") || name.equals("C H R I S P Y M E A L") ){
+                    String f= "c"+userId;
+                    update(f);
+                    }
+
+                if (name.equals("F A H E T A") || name.equals("F A H E T A M E A L") ){
+                    String f= "f"+userId;
+                    update(f);
+                    }
             }
         });
+
 
         holder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +113,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                     count1--;
                     holder.count.setText(String.valueOf(count1));
                     String p =  String.valueOf(holder.rPrice.getText());
-                    int pric=  Integer.parseInt(p)-Integer.parseInt(p1);
+                    pric=  Integer.parseInt(p)-Integer.parseInt(p1);
                     holder.rPrice.setText(String.valueOf(pric));
                     }
 
@@ -123,10 +141,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             minus= (ImageView)itemView.findViewById(R.id.minus);
             rPrice= (TextView)itemView.findViewById(R.id.rPrice);
 
+
         }
     }
 
+    public void update(String f) {
+        order.clear();
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("/Snack/" + f + "/rPrice/", pric);
+        map.put("/Snack/" + f + "/num/", count1);
 
+        ref.updateChildren(map);
+
+        //ref.child("Snack").child(f).child("rPrice").setValue(pric);
+        //ref.child("Snack").child(f).child("num").setValue(count1);
+
+           }
 }
 

@@ -21,6 +21,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class Snack extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
+    int coun = 1;
+
     RadioButton r1, r2, r3, r4, r5, r6, r7, r8;
     ImageView b1, b2, b3, b4, b5, b6, b7, b8;
     int count1, count2, count3, count4 = 0;
@@ -274,6 +276,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 price1=6;
                 break;
 
+
             case R.id.radio_h:
                 count2=0;
                 rPrice2=0;
@@ -345,10 +348,10 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
             case R.id.nav_orders:
 
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1 );}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"s" );}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"h");}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"c");}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"f");}
                 startActivity(new Intent(this, Orders.class));
                 break;
 
@@ -365,11 +368,16 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         return true;
     }
 
-    public void upload(int val , int count, String ff ,int p) {
+    public void upload(int val , int count, String ff ,int p , String name) {
 
-        DatabaseReference postsRef = ref.child("Snack");
-        DatabaseReference newPostRef = postsRef.push();
-        newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
+       // DatabaseReference postsRef = ref.child("Snack");
+       // DatabaseReference newPostRef = postsRef.push();
+       // newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
+
+        sOrder user = new sOrder(ff ,val ,count , userId,p);
+        FirebaseDatabase.getInstance().getReference("Snack")
+                .child(String.valueOf(name+userId))
+                .setValue(user);
 
         }
     }
