@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -83,7 +84,8 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
         orderNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(check.this, Confirm.class);
+                startActivity(intent);
             }
         });
     }
@@ -111,7 +113,29 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.nav_profile:
+                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_burger:
+                Toast.makeText(this, "burger", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.nav_orders:
+                startActivity(new Intent(this, Orders.class));
+                break;
+
+            case R.id.nav_location:
+                startActivity(new Intent(this, Location.class));
+                break;
+
+            case R.id.nav_logout:
+                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                break;
+
+        }//end switch
+        drawerLayout.closeDrawer(GravityCompat.END);
+        return true;
     }
 
 

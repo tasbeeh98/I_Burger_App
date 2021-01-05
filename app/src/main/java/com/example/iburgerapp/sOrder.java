@@ -6,6 +6,7 @@ public class sOrder {
     private int num;
     private String userId;
     private int rPrice;
+    private String type;
 
     public sOrder() {
 
@@ -18,12 +19,13 @@ public class sOrder {
     }
 
 
-    public sOrder(String oName, int price, int num , String userId , int rPrice) {
+    public sOrder(String oName, int price, int num , String userId , int rPrice,String type) {
         this.oName = oName;
         this.price = price;
         this.num = num;
         this.userId = userId;
         this.rPrice = rPrice ;
+        this.type = type;
     }
 
     public int getrPrice() {
@@ -61,6 +63,10 @@ public class sOrder {
     public String getUserId() {
         return userId;
     }
+
+    public String getType() {return type;}
+
+    public void setType(String type) {this.type = type;}
 
     public void setUserId(String userId) {
         this.userId = userId;

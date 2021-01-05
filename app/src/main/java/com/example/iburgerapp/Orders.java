@@ -1,22 +1,19 @@
 package com.example.iburgerapp;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,8 +31,10 @@ import java.util.List;
 public class Orders extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private List<sOrder> listOrder;
+
     private RecyclerView rv;
     private MyAdapter adapter;
+
 
     String userId;
     ImageView folder,back,confirm;
@@ -62,14 +61,12 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
 
        rv=(RecyclerView)findViewById(R.id.recyclerview);
        rv.setHasFixedSize(true);
-        /////rv.setLayoutManager(new LinearLayoutManager(this));
-        rv.setLayoutManager(new GridLayoutManager(this, 2));
-
+       rv.setLayoutManager(new GridLayoutManager(this, 2));
 
         listOrder=new ArrayList<>();
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        Query o = ref.child("Snack").orderByChild("userId").equalTo(userId);
+        Query o = ref.child("Order").orderByChild("userId").equalTo(userId);
 
         o.addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,8 +77,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
                         listOrder.add(l);
                     }
                     adapter=new MyAdapter(listOrder);
-                    rv.setAdapter( adapter);
-
+                    rv.setAdapter(adapter);
                 }
             }
 
@@ -91,31 +87,8 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
             }
         });//end the first data
 
-     /*   DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference();
-        Query oo = ref1.child("User").orderByChild("email").equalTo("koko@gmail.com");
 
-        oo.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    for (DataSnapshot fnpsnapshot : snapshot.getChildren()){
-                        sOrder  l=fnpsnapshot.getValue(sOrder.class);
-                        listOrder.add(l);
-                    }
-                    adapter=new MyAdapter(listOrder);
-                    rv.setAdapter(adapter);
 
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-*/
         folder = findViewById(R.id.folder);
         folder.setOnClickListener(new View.OnClickListener() {
 
@@ -153,7 +126,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
                 startActivity(new Intent(this, Profile.class));
                 break;
             case R.id.nav_burger:
-                //startActivity(new Intent(this, Burger.class));
+                 startActivity(new Intent(this, Burger.class));
                 break;
             case R.id.nav_snacks:
                 startActivity(new Intent(this, Snack.class));

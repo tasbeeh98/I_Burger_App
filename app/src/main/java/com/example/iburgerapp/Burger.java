@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-public class Snack extends AppCompatActivity implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
+public class Burger extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     RadioButton r1, r2, r3, r4, r5, r6, r7, r8;
     ImageView b1, b2, b3, b4, b5, b6, b7, b8;
@@ -47,12 +47,13 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_snack);
+        setContentView(R.layout.activity_burger);
+
 
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         userId= currentFirebaseUser.getUid();
 
-        deleteSnake();
+        deleteBurger();
 
         rPrice1 = 0;
         rPrice2 = 0;
@@ -73,7 +74,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Snack.this, HomeScreen.class);
+                Intent intent = new Intent(Burger.this, HomeScreen.class);
                 startActivity(intent);
             }
         });
@@ -236,7 +237,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
     }
 
-    private void deleteSnake() {
+    private void deleteBurger() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query delete = ref.child("Order").orderByChild("userId").equalTo(userId);
 
@@ -245,7 +246,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
                     sOrder s = deleteSnapshot.getValue(sOrder.class);
-                    if(s.getType().equals("Snack")){
+                    if(s.getType().equals("Burger")){
                     deleteSnapshot.getRef().removeValue();
                 }
                 }
@@ -349,19 +350,19 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
             case R.id.nav_profile:
                 startActivity(new Intent(this, Profile.class));
                 break;
-            case R.id.nav_burger:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"s" );}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"h");}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"c");}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"f");}
-                startActivity(new Intent(this, Burger.class));
+            case R.id.nav_snacks:
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"c" );}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"bf");}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"be");}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"m");}
+                startActivity(new Intent(this, Snack.class));
                 break;
 
             case R.id.nav_orders:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"s" );}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"h");}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"c");}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"f");}
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"c" );}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"bf");}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"be");}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"m");}
                 startActivity(new Intent(this, Orders.class));
                 break;
 
@@ -380,14 +381,14 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
     public void upload(int val , int count, String ff ,int p , String name) {
 
-       // DatabaseReference postsRef = ref.child("Snack");
-       // DatabaseReference newPostRef = postsRef.push();
-       // newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
+        // DatabaseReference postsRef = ref.child("Snack");
+        // DatabaseReference newPostRef = postsRef.push();
+        // newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
 
-        sOrder user = new sOrder(ff ,val ,count , userId,p,"Snack");
+        sOrder user = new sOrder(ff ,val ,count , userId,p,"Burger");
         FirebaseDatabase.getInstance().getReference("Order")
                 .child(String.valueOf(name+userId))
                 .setValue(user);
 
-        }
     }
+}

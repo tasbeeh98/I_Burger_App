@@ -45,7 +45,7 @@
             android:scaleType="centerInside"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.74"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/burger"
             app:layout_constraintTop_toBottomOf="@+id/imageView4"
             app:srcCompat="@drawable/chicken_bucket" />
 
@@ -69,7 +69,7 @@
             app:srcCompat="@drawable/iburger_logo_big" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/burger"
             android:layout_width="129dp"
             android:layout_height="126dp"
             android:layout_marginStart="20dp"
@@ -90,9 +90,9 @@
             android:text="B U R G E R"
             android:textColor="#000000"
             android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageButton"
-            app:layout_constraintStart_toStartOf="@+id/imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+            app:layout_constraintEnd_toEndOf="@+id/burger"
+            app:layout_constraintStart_toStartOf="@+id/burger"
+            app:layout_constraintTop_toBottomOf="@+id/burger" />
 
         <TextView
             android:id="@+id/textView6"

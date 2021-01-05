@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeScreen extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageButton snack;
+    ImageButton snack,burger;
     ImageView folder;
     DrawerLayout drawerLayout ;
     NavigationView navigationView ;
@@ -49,6 +49,17 @@ public class HomeScreen extends AppCompatActivity  implements NavigationView.OnN
                 startActivity(intent);
             }
         }) ;
+
+        burger= findViewById(R.id .burger);
+        burger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeScreen.this,Burger.class);
+                startActivity(intent);
+            }
+        }) ;
+
+
         folder = findViewById(R.id.folder);
         folder.setOnClickListener(new View.OnClickListener() {
 
@@ -68,7 +79,7 @@ public class HomeScreen extends AppCompatActivity  implements NavigationView.OnN
                 startActivity(new Intent(this, Profile.class));
                 break;
             case R.id.nav_burger:
-                //startActivity(new Intent(this, Burger.class));
+                startActivity(new Intent(this, Burger.class));
                 break;
             case R.id.nav_snacks:
                 startActivity(new Intent(this, Snack.class));
