@@ -36,7 +36,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
     private List<sOrder> listOrder;
     private RecyclerView rv;
     private MyAdapter adapter;
-    GridView gridView;
+
     String userId;
     ImageView folder,back,confirm;
     DrawerLayout drawerLayout ;
@@ -140,7 +140,8 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(Orders.this, check.class);
+                startActivity(intent);
             }
         });
     }

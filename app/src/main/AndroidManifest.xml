@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IBurgerApp">
-        <activity android:name=".check"></activity>
+        <activity android:name=".Confirm"></activity>
+        <activity android:name=".check" />
         <activity android:name=".Orders" />
         <activity android:name=".Snack" />
         <activity android:name=".SignUp" />
