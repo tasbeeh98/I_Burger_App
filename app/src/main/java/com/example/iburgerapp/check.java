@@ -2,7 +2,6 @@ package com.example.iburgerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,11 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class check extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     ImageView folder,back,orderNow;
@@ -34,7 +29,6 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
     String userId;
     DrawerLayout drawerLayout ;
     NavigationView navigationView ;
-    private List<sOrder> listOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +37,6 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
 
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         userId= currentFirebaseUser.getUid();
-
-        listOrder=new ArrayList<>();
 
         getPrice();
 
@@ -92,7 +84,7 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
 
     private void getPrice() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Snack").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
+        ref.child("Order").orderByChild("userId").equalTo(userId).addValueEventListener(new ValueEventListener() {
             int sum=0;
         @Override
         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -115,10 +107,14 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_profile:
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Profile.class));
                 break;
             case R.id.nav_burger:
-                Toast.makeText(this, "burger", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, Burger.class));
+                break;
+
+            case R.id.nav_snacks:
+                startActivity(new Intent(this, Snack.class));
                 break;
 
             case R.id.nav_orders:

@@ -34,36 +34,39 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
 
     private RecyclerView rv;
     private MyAdapter adapter;
-
-
     String userId;
     ImageView folder,back,confirm;
     DrawerLayout drawerLayout ;
     NavigationView navigationView ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders);
 
-        drawerLayout = findViewById(R.id .drawer_layout );
+        drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 
         navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open ,R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
-        toggle.syncState() ;
+        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile) ;
+        navigationView.setCheckedItem(R.id.nav_profile);
 
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        userId= currentFirebaseUser.getUid();
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userId = currentFirebaseUser.getUid();
 
-       rv=(RecyclerView)findViewById(R.id.recyclerview);
-       rv.setHasFixedSize(true);
-       rv.setLayoutManager(new GridLayoutManager(this, 2));
 
-        listOrder=new ArrayList<>();
+
+        rv = (RecyclerView) findViewById(R.id.recyclerview);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new GridLayoutManager(this, 2));
+
+        listOrder = new ArrayList<>();
+
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         Query o = ref.child("Order").orderByChild("userId").equalTo(userId);
@@ -71,14 +74,18 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
         o.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    for (DataSnapshot npsnapshot : dataSnapshot.getChildren()){
-                        sOrder  l=npsnapshot.getValue(sOrder.class);
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot npsnapshot : dataSnapshot.getChildren()) {
+                        sOrder l = npsnapshot.getValue(sOrder.class);
                         listOrder.add(l);
+
                     }
-                    adapter=new MyAdapter(listOrder);
+
+                    adapter = new MyAdapter(listOrder);
+                    confirm.setVisibility(View.VISIBLE);
                     rv.setAdapter(adapter);
                 }
+
             }
 
             @Override

@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,24 +73,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 pric = Integer.parseInt(p) + Integer.parseInt(p1);
                 holder.rPrice.setText(String.valueOf(pric));
 
-                if (name.equals("S H A W E R M A") || name.equals("S H A W E R M A M E A L") ){
-                    String f= "s"+userId;
-                    update(f,pric,count1);
-                    }
-                if (name.equals("H O T  D O G") || name.equals("H O T  D O G M E A L") ){
-                    String f= "h"+userId;
-                    update(f,pric,count1);
-                    }
 
-                if (name.equals("C H R I S P Y") || name.equals("C H R I S P Y M E A L") ){
-                    String f= "c"+userId;
-                    update(f,pric,count1);
-                    }
+                update(name,count1,pric);
 
-                if (name.equals("F A H E T A") || name.equals("F A H E T A M E A L") ){
-                    String f= "f"+userId;
-                    update(f,pric,count1);
-                    }
             }
         });
 
@@ -95,14 +84,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
                 p1 =  String.valueOf(holder.price.getText());
-
                 String name = String.valueOf(holder.name.getText());
                 String a=String.valueOf(holder.count.getText());
                 count1= Integer.parseInt(a);
                 if (count1 <= 0 ) {
                     count1 = 0;
                     holder.count.setText(String.valueOf(count1));
-                    holder.rPrice.setText(String.valueOf(0));}
+                    holder.rPrice.setText(String.valueOf(0));
+                    //update(name,0, 0);
+                }
                 else {
                     p1 =  String.valueOf(holder.price.getText());
                     count1--;
@@ -110,26 +100,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                     String p =  String.valueOf(holder.rPrice.getText());
                     pric=  Integer.parseInt(p)-Integer.parseInt(p1);
                     holder.rPrice.setText(String.valueOf(pric));
-                    if (name.equals("S H A W E R M A") || name.equals("S H A W E R M A M E A L") ){
-                        String f= "s"+userId;
-                        update(f,pric,count1);
-                    }
-                    if (name.equals("H O T  D O G") || name.equals("H O T  D O G M E A L") ){
-                        String f= "h"+userId;
-                        update(f,pric,count1);
+                    update(name,count1,pric);
                     }
 
-                    if (name.equals("C H R I S P Y") || name.equals("C H R I S P Y M E A L") ){
-                        String f= "c"+userId;
-                        update(f,pric,count1);
-                    }
 
-                    if (name.equals("F A H E T A") || name.equals("F A H E T A M E A L") ){
-                        String f= "f"+userId;
-                        update(f,pric,count1);
-                    }
-
-                    }
 
             }
         });
@@ -159,17 +133,46 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         }
     }
 
-    public void update(String f , int p , int c) {
-        order.clear();
+    public void update(String name, int num, int price) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query delete = ref.child("Order").orderByChild("userId").equalTo(userId);
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("/Snack/" + f + "/rPrice/", p);//price
-        map.put("/Snack/" + f + "/num/", c);//count1
+        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
+                    sOrder s = deleteSnapshot.getValue(sOrder.class);
+                    if(s.getType().equals("Snack")){
+                        if (s.getoName().equals(name) ){
+                            order.clear();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/rPrice/", price);//price
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/num/", num);//count1
+                            ref.updateChildren(map);
 
-        ref.updateChildren(map);
+                        }
 
-        //ref.child("Snack").child(f).child("rPrice").setValue(pric);
-        //ref.child("Snack").child(f).child("num").setValue(count1);
+                    }
+                    if (s.getType().equals("Burger")){
+                        if (s.getoName().equals(name) ){
+                            order.clear();
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/rPrice/", price);//price
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/num/", num);//count1
+                            ref.updateChildren(map);
+
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
 
            }
 }

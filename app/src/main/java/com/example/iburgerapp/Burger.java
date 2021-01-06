@@ -351,18 +351,18 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 startActivity(new Intent(this, Profile.class));
                 break;
             case R.id.nav_snacks:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"c" );}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"bf");}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"be");}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"m");}
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1);}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
                 startActivity(new Intent(this, Snack.class));
                 break;
 
             case R.id.nav_orders:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1,"c" );}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2,"bf");}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3,"be");}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4,"m");}
+                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1);}
+                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
+                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
+                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
                 startActivity(new Intent(this, Orders.class));
                 break;
 
@@ -379,16 +379,11 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
         return true;
     }
 
-    public void upload(int val , int count, String ff ,int p , String name) {
+    public void upload(int val , int count, String ff ,int p) {
 
-        // DatabaseReference postsRef = ref.child("Snack");
-        // DatabaseReference newPostRef = postsRef.push();
-        // newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
-
-        sOrder user = new sOrder(ff ,val ,count , userId,p,"Burger");
-        FirebaseDatabase.getInstance().getReference("Order")
-                .child(String.valueOf(name+userId))
-                .setValue(user);
+         DatabaseReference postsRef = ref.child("Order");
+         DatabaseReference newPostRef = postsRef.push();
+         newPostRef.setValue(new sOrder(ff, val, count, userId ,p ,"Burger"));
 
     }
 }

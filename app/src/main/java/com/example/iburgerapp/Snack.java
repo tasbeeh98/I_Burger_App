@@ -380,14 +380,14 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
 
     public void upload(int val , int count, String ff ,int p , String name) {
 
-       // DatabaseReference postsRef = ref.child("Snack");
-       // DatabaseReference newPostRef = postsRef.push();
-       // newPostRef.setValue(new sOrder(ff, val, count, userId ,p ));
+        DatabaseReference postsRef = ref.child("Order");
+        DatabaseReference newPostRef = postsRef.push();
+        newPostRef.setValue(new sOrder(ff, val, count, userId ,p,"Snack"));
 
-        sOrder user = new sOrder(ff ,val ,count , userId,p,"Snack");
-        FirebaseDatabase.getInstance().getReference("Order")
-                .child(String.valueOf(name+userId))
-                .setValue(user);
+        //sOrder user = new sOrder(ff ,val ,count , userId,p,"Snack");
+        //FirebaseDatabase.getInstance().getReference("Order")
+         //       .child(String.valueOf(name+userId))
+          //      .setValue(user);
 
         }
     }
