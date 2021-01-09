@@ -102,19 +102,19 @@
         android:layout_height="30dp"
 
         android:layout_marginStart="8dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="@+id/imageView12"
-        app:layout_constraintTop_toTopOf="@+id/imageView12"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
         app:srcCompat="@drawable/plus" />
 
     <ImageView
         android:id="@+id/minus"
         android:layout_width="23dp"
         android:layout_height="30dp"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView12"
-        app:layout_constraintTop_toBottomOf="@+id/counttxt"
+        app:layout_constraintTop_toBottomOf="@+id/imageView9"
         app:srcCompat="@drawable/minus" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
