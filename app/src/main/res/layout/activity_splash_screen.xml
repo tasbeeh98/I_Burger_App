@@ -8,7 +8,6 @@
     android:background="@drawable/splash"
     tools:context=".SplashScreen">
 
-
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"

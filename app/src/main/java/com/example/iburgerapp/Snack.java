@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -67,7 +66,7 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile);
+        navigationView.setCheckedItem(R.id.nav_snacks);
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -369,9 +368,6 @@ public class Snack extends AppCompatActivity implements View.OnClickListener,Nav
                 startActivity(new Intent(this, Location.class));
                 break;
 
-            case R.id.nav_logout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
-                break;
 
         }//end switch
         drawerLayout.closeDrawer(GravityCompat.END);

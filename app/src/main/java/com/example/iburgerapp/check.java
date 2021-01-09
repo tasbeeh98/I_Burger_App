@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -50,7 +49,7 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState() ;
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile) ;
+        navigationView.setCheckedItem(R.id.nav_orders) ;
 
         folder = findViewById(R.id.folder);
         folder.setOnClickListener(new View.OnClickListener() {
@@ -117,17 +116,10 @@ public class check extends AppCompatActivity implements NavigationView.OnNavigat
                 startActivity(new Intent(this, Snack.class));
                 break;
 
-            case R.id.nav_orders:
-                startActivity(new Intent(this, Orders.class));
-                break;
-
             case R.id.nav_location:
                 startActivity(new Intent(this, Location.class));
                 break;
 
-            case R.id.nav_logout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
-                break;
 
         }//end switch
         drawerLayout.closeDrawer(GravityCompat.END);

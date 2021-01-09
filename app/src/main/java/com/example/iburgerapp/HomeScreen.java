@@ -1,12 +1,12 @@
 package com.example.iburgerapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -17,12 +17,19 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class HomeScreen extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageButton snack,burger;
     ImageView folder;
     DrawerLayout drawerLayout ;
+    String userId;
     NavigationView navigationView ;
 
     @Override
@@ -33,13 +40,16 @@ public class HomeScreen extends AppCompatActivity  implements NavigationView.OnN
         drawerLayout = findViewById(R.id .drawer_layout );
         navigationView = findViewById(R.id.nav_view);
 
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        userId= currentFirebaseUser.getUid();
+
+        deleteSnake();
+
         navigationView.bringToFront();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout,R.string.navigation_drawer_open ,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState() ;
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile) ;
-
 
         snack = findViewById(R.id .snackBtn);
         snack.setOnClickListener(new View.OnClickListener() {
@@ -94,12 +104,41 @@ public class HomeScreen extends AppCompatActivity  implements NavigationView.OnN
                 break;
 
             case R.id.nav_logout :
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = getSharedPreferences("Login" , MODE_PRIVATE);
+                SharedPreferences .Editor editor = preferences.edit();
+                editor.putString("remember","false");
+                editor.apply();
+                finish();
+                Intent activity = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(activity);
                 break;
 
         }//end switch
         drawerLayout.closeDrawer(GravityCompat.END);
         return true;
     }
+    private void deleteSnake() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query delete = ref.child("Order").orderByChild("userId").equalTo(userId);
+
+        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
+                    sOrder s = deleteSnapshot.getValue(sOrder.class);
+                    if(s.getType().equals("Snack") || s.getType().equals("Burger")){
+                        deleteSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
+    }
+
 }
 

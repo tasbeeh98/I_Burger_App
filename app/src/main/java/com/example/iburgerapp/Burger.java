@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -68,7 +67,7 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile);
+        navigationView.setCheckedItem(R.id.nav_burger) ;
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -370,10 +369,6 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 startActivity(new Intent(this, Location.class));
                 break;
 
-            case R.id.nav_logout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
-                break;
-
         }//end switch
         drawerLayout.closeDrawer(GravityCompat.END);
         return true;
@@ -386,4 +381,5 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
          newPostRef.setValue(new sOrder(ff, val, count, userId ,p ,"Burger"));
 
     }
+
 }

@@ -24,8 +24,8 @@
         android:foregroundTint="#00000000"
         app:menu="@menu/menu"
         android:fitsSystemWindows="true"
-        app:itemTextColor="@color/black"
         android:layout_gravity="end"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@drawable/orders"

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -53,7 +52,7 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem(R.id.nav_profile);
+        navigationView.setCheckedItem(R.id.nav_orders);
 
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userId = currentFirebaseUser.getUid();
@@ -143,9 +142,6 @@ public class Orders extends AppCompatActivity implements NavigationView.OnNaviga
                 startActivity(new Intent(this, Location.class));
                 break;
 
-            case R.id.nav_logout :
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
-                break;
 
         }//end switch
         drawerLayout.closeDrawer(GravityCompat.END);

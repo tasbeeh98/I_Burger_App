@@ -1,25 +1,33 @@
 package com.example.iburgerapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.*;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView forgetText,signUpText,loginText;
     private FirebaseAuth mAuth;
     private EditText editTextEmail ,editTextPassword;
+    String ch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +44,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loginText.setOnClickListener(this);
 
         editTextEmail=findViewById(R.id.editTextEmailAddress) ;
+        editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!isEmailValid(editTextEmail.getText().toString())){
+                    editTextEmail.setError("Not Valid");
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
         editTextPassword=findViewById(R.id.editTextPassword) ;
 
         mAuth = FirebaseAuth.getInstance();
 
+        SharedPreferences preferences = getSharedPreferences("Login" , MODE_PRIVATE);
+        String ch = preferences.getString("remember","");
+        if (ch .equals("true")){
+            Intent activity = new Intent(getApplicationContext(), HomeScreen.class);
+            startActivity(activity);
+        }
+        else if (ch .equals("false")){
+            Toast.makeText(MainActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+
+        }
          }
 
     public void onClick(View v){
@@ -49,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.signUp :
                 startActivity(new Intent(this,SignUp.class));
+
                 break;
             case R.id.login :
                 //startActivity(new Intent(this,HomeScreen.class));
@@ -84,11 +119,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    startActivity(new Intent(MainActivity.this,HomeScreen.class));
+                    SharedPreferences preferences1 = getSharedPreferences("Login" , MODE_PRIVATE);
+                    SharedPreferences .Editor editor = preferences1.edit();
+                    editor.putString("remember","true");
+                    editor.apply();
+                    Intent activity = new Intent(getApplicationContext(), HomeScreen.class);
+                    startActivity(activity);
+
                 }else
                 {Toast.makeText(MainActivity.this, "Failed to login! please check your credentials!", Toast.LENGTH_SHORT).show();}
 
             }
         });
+    }
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

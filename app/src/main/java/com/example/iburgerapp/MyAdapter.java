@@ -31,7 +31,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference();
 
-
     public MyAdapter(List<sOrder> listData) {
         this.order = listData;
     }
@@ -55,8 +54,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         userId= currentFirebaseUser.getUid();
 
-
-
         holder.plus.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,7 +69,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 String p = String.valueOf(holder.rPrice.getText());
                 pric = Integer.parseInt(p) + Integer.parseInt(p1);
                 holder.rPrice.setText(String.valueOf(pric));
-
 
                 update(name,count1,pric);
 
@@ -102,13 +98,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                     holder.rPrice.setText(String.valueOf(pric));
                     update(name,count1,pric);
                     }
-
-
-
             }
         });
-
-
     }
 
     @Override
@@ -128,8 +119,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             plus= (ImageView)itemView.findViewById(R.id.plus);
             minus= (ImageView)itemView.findViewById(R.id.minus);
             rPrice= (TextView)itemView.findViewById(R.id.rPrice);
-
-
         }
     }
 
@@ -149,7 +138,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                             map.put("/Order/" + deleteSnapshot.getKey() + "/rPrice/", price);//price
                             map.put("/Order/" + deleteSnapshot.getKey() + "/num/", num);//count1
                             ref.updateChildren(map);
-
                         }
 
                     }
@@ -160,20 +148,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                             map.put("/Order/" + deleteSnapshot.getKey() + "/rPrice/", price);//price
                             map.put("/Order/" + deleteSnapshot.getKey() + "/num/", num);//count1
                             ref.updateChildren(map);
-
                         }
-
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
-
            }
 }
 
