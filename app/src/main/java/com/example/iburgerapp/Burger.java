@@ -24,6 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Burger extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
 
     RadioButton r1, r2, r3, r4, r5, r6, r7, r8;
@@ -38,6 +42,7 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
     String ff, ff1, ff2, ff3;
     String userId;
     int rPrice1,rPrice2,rPrice3,rPrice4;
+    private List<sOrder > order;
 
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -114,6 +119,8 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 t1.setText(String.valueOf(count1));
                 val1 = 1;
                 rPrice1 +=price1;
+                if (val1==1 && count1 ==1){upload(price1 , count1, ff,rPrice1);}
+                if (val1==1 && count1 >1 ){update(ff,count1,rPrice1);}
 
             }
         });
@@ -132,6 +139,9 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                     count1--;
                     t1.setText(String.valueOf(count1));
                     val1 = 1;
+                    rPrice1 -=price1;
+                    if (val1==1 && count1 >=1 ){update(ff,count1,rPrice1);}
+                    if (val1==1 && count1 <1 ){deleteSingleSnake(ff);}
                 }
 
 
@@ -146,6 +156,8 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 t2.setText(String.valueOf(count2));
                 val2 = 1;
                 rPrice2+=price2;
+                if (val2==1 && count2 ==1){upload(price2 , count2, ff1,rPrice2);}
+                if (val2==1 && count2 >1 ){update(ff1,count2,rPrice2);}
 
             }
         });
@@ -162,6 +174,9 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                     count2--;
                     t2.setText(String.valueOf(count2));
                     val2 = 1;
+                    rPrice2 -=price2;
+                    if (val2==1 && count2 >=1 ){update(ff1,count2,rPrice2);}
+                    if (val2==1 && count2 <1 ){deleteSingleSnake(ff1);}
                 }
 
             }
@@ -174,6 +189,8 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 t3.setText(String.valueOf(count3));
                 val3 = 1;
                 rPrice3+=price3;
+                if (val3==1 && count3 ==1){upload(price3 , count3, ff2,rPrice3);}
+                if (val3==1 && count3 >1 ){update(ff2,count3,rPrice3);}
 
             }
         });
@@ -190,6 +207,9 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                     count3--;
                     t3.setText(String.valueOf(count3));
                     val3 = 1;
+                    rPrice3 -=price3;
+                    if (val3==1 && count3 >=1 ){update(ff2,count3,rPrice3);}
+                    if (val3==1 && count3 <1 ){deleteSingleSnake(ff2);}
                 }
 
             }
@@ -202,6 +222,8 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 t4.setText(String.valueOf(count4));
                 val4 = 1;
                 rPrice4 +=price4;
+                if (val4 ==1 && count4 ==1){upload(price4, count4, ff3,rPrice4);}
+                if (val4==1 && count4 >1 ){update(ff3,count4,rPrice4);}
 
             }
         });
@@ -218,6 +240,9 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                     count4--;
                     t4.setText(String.valueOf(count4));
                     val4 = 1;
+                    rPrice4 -=price4;
+                    if (val4==1 && count4 >=1 ){update(ff3,count4,rPrice4);}
+                    if (val4==1 && count4 <1 ){deleteSingleSnake(ff3);}
                 }
 
             }
@@ -350,18 +375,12 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
                 startActivity(new Intent(this, Profile.class));
                 break;
             case R.id.nav_snacks:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1);}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
+
                 startActivity(new Intent(this, Snack.class));
                 break;
 
             case R.id.nav_orders:
-                if (val1==1 && count1 >0){ upload(price1 , count1, ff,rPrice1);}
-                if (val2==1 && count2 >0){upload(price2,count2, ff1,rPrice2);}
-                if (val3==1 && count3 >0){upload(price3,count3, ff2,rPrice3);}
-                if (val4 ==1 && count4 >0){upload(price4, count4, ff3,rPrice4);}
+
                 startActivity(new Intent(this, Orders.class));
                 break;
 
@@ -380,6 +399,59 @@ public class Burger extends AppCompatActivity implements View.OnClickListener, N
          DatabaseReference newPostRef = postsRef.push();
          newPostRef.setValue(new sOrder(ff, val, count, userId ,p ,"Burger"));
 
+    }
+
+
+    public void update(String name, int num, int price) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query delete = ref.child("Order").orderByChild("userId").equalTo(userId);
+
+        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
+                    sOrder s = deleteSnapshot.getValue(sOrder.class);
+                    if (s.getType().equals("Burger")){
+                        if (s.getoName().equals(name) ){
+
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/rPrice/", price);//price
+                            map.put("/Order/" + deleteSnapshot.getKey() + "/num/", num);//count1
+                            ref.updateChildren(map);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+    private void deleteSingleSnake(String ff) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Query delete = ref.child("Order").orderByChild("userId").equalTo(userId);
+
+        delete.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot deleteSnapshot: dataSnapshot.getChildren()) {
+                    sOrder s = deleteSnapshot.getValue(sOrder.class);
+                    if(s.getType().equals("Burger") ){
+                        if (s.getoName().equals(ff) ){
+                            deleteSnapshot.getRef().setValue(null);
+                        }
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+
+        });
     }
 
 }
